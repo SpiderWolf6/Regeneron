@@ -324,13 +324,7 @@ def uniprot_search(prot_id, type):
         print(bg_id)
         bgee_search(bg_id, type)
 
-db = pd.read_csv("C:/goutam/soham/MSKCC/project/database_final.csv") #replace with appropriate filepath
-db["Location"] = "Cell Membrane"
-db["UniPROT ID"] = "Null"
-db.drop(db.columns[0], axis = 1, inplace=True)
-# db.drop(db.columns[[0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]], axis=1, inplace=True)
-print(db["Location"])
-
+#Initialize Selenium webdriver for web scraping and data gathering purposes
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument('--no-sandbox')
@@ -338,21 +332,19 @@ chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('enable-logging')
 driver = webdriver.Chrome(options=chrome_options)
 
-alr_ex = pd.read_csv("C:/goutam/soham/MSKCC/project/example_database_final.csv")
-alr_ex["Location"] = "Cell Membrane"
 #Read CSV files of downloaded UniProt collections containing cell surface (surf_ex), ECM (ecm_ex), and cell membrane (mem_ex) proteins
-surf_ex = pd.read_excel("C:/goutam/soham/MSKCC/project/surface_batch.xlsx") #replace with appropriate filepath
-ecm_ex = pd.read_excel("C:/goutam/soham/MSKCC/project/ecm_batch.xlsx") #replace with appropriate filepath
-mem_ex = pd.read_excel("C:/goutam/soham/MSKCC/project/UniPROT_extract.xlsx") #replace with appropriate filepath
+surf_ex = pd.read_excel("C:/user/folder/surface_proteins.xlsx") #replace with appropriate filepath
+ecm_ex = pd.read_excel("C:/user/folder/ECM_proteins.xlsx") #replace with appropriate filepath
+mem_ex = pd.read_excel("C:/user/folder/membrane_proteins.xlsx") #replace with appropriate filepath
 
 #Iterate through membrane proteins, using the unique protein ID to pass into uniprot_search function
-# i=0
-# for ind in mem_ex.index:
-#     i += 1
-#     p_name = mem_ex["Protein names"][ind]
-#     p_id = mem_ex["Entry"][ind]
-#     uniprot_search(p_id, "Membrane")
-#     print(i)
+i=0
+for ind in mem_ex.index:
+    i += 1
+    p_name = mem_ex["Protein names"][ind]
+    p_id = mem_ex["Entry"][ind]
+    uniprot_search(p_id, "Membrane")
+    print(i)
 
 time.sleep(2)
 
@@ -384,18 +376,18 @@ driver.quit()
 print("All Done")
 
 #Create dataframes using each dictionary (mem_dict, surf_dict, ecm_dict)
-# df = pd.DataFrame(data=mem_dict)
-# print(df)
-#Send database containing membrane proteins to be filtered and reorganized through filter_sort function
-# filter_sort(df)
-# df["Location"] = "Cell Membrane"
-# df = df[list(("Protein Name", "Signal Sequence", "Expressions Scores (Highest)",
-#                              "Expressions Scores (Highest) - Tissue Type", "Expressions Scores (2nd Highest)",
-#                              "Expressions Scores (2nd Highest) - Tissue Type", "Expressions Scores (3rd Highest)",
-#                              "Expressions Scores (3rd Highest) - Tissue Type", "Expressions Scores (Lowest)",
-#                              "Expressions Scores (Lowest) - Tissue Type", "Expressions Scores (2nd Lowest)",
-#                              "Expressions Scores (2nd Lowest) - Tissue Type", "Expressions Scores (3rd Lowest)",
-#                              "Expressions Scores (3rd Lowest) - Tissue Type", "Location", "UniPROT ID"))]
+df = pd.DataFrame(data=mem_dict)
+print(df)
+Send database containing membrane proteins to be filtered and reorganized through filter_sort function
+filter_sort(df)
+df["Location"] = "Cell Membrane"
+df = df[list(("Protein Name", "Signal Sequence", "Expressions Scores (Highest)",
+                             "Expressions Scores (Highest) - Tissue Type", "Expressions Scores (2nd Highest)",
+                             "Expressions Scores (2nd Highest) - Tissue Type", "Expressions Scores (3rd Highest)",
+                             "Expressions Scores (3rd Highest) - Tissue Type", "Expressions Scores (Lowest)",
+                             "Expressions Scores (Lowest) - Tissue Type", "Expressions Scores (2nd Lowest)",
+                             "Expressions Scores (2nd Lowest) - Tissue Type", "Expressions Scores (3rd Lowest)",
+                             "Expressions Scores (3rd Lowest) - Tissue Type", "Location", "UniPROT ID"))]
 
 df2 = pd.DataFrame(data=surf_dict)
 print(df2)
@@ -433,4 +425,4 @@ print(df3)
 result = pd.concat([db, df2, df3], axis=0, ignore_index=True)
 print(result)
 
-result.to_csv("C:/goutam/soham/MSKCC/project/testing_database.csv") #replace with appropriate filepath
+result.to_csv("C:/user/folder/final_database.csv") #replace with appropriate filepath
