@@ -378,7 +378,7 @@ print("All Done")
 #Create dataframes using each dictionary (mem_dict, surf_dict, ecm_dict)
 df = pd.DataFrame(data=mem_dict)
 print(df)
-Send database containing membrane proteins to be filtered and reorganized through filter_sort function
+#Send database containing membrane proteins to be filtered and reorganized through filter_sort function
 filter_sort(df)
 df["Location"] = "Cell Membrane"
 df = df[list(("Protein Name", "Signal Sequence", "Expressions Scores (Highest)",
