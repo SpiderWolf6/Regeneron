@@ -101,3 +101,4 @@ plt.xlabel('Feature Importance - predicted by RandomForest')
 plt.show()
 
 # NOTE: The program above is specifically tailored towards Highest Expression Scores simulation. For predicting under different scenarios, please follow the commented directions to update the program where necessary.
+# NOTE: For ease of programming, Jupyter Notebook is the suggested platform for efficient data analysis and machine learning visualization.
